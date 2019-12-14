@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>项目审核</title>
+    <link href="style/base.css" rel="stylesheet" type="text/css"/>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body style="display: flex; flex-direction: column">
+<div class="header-panel">
+    <h1>科研项目管理系统</h1>
+    <div id="app" style="position: absolute;right: 100px;font-size: 20px" >
+        <a href="user.html" style="text-decoration: none" v-if="login">{{userInfo.name}}</a>
+        <a href="login.html" style="text-decoration: none" v-else>登录</a>
+    </div>
+</div>
+<div style="width: 100%; display: flex;flex-direction: row;">
+    <div style="width: 300px;height: 800px; border-right: solid; padding: 20px">
+        <div class="operation-panel">
+            <a href="index.html">首页</a>
+        </div>
+        <div class="operation-panel">
+            <a href="user.html">我的信息</a>
+        </div>
+        <div class="operation-panel">
+            <a href="project.html">我的项目</a>
+        </div>
+        <div class="operation-panel" style="background: gray">
+            <a href="approval.html">审核项目</a>
+        </div>
+        <div class="operation-panel">
+            <a href="check.html">验收项目</a>
+        </div>
+    </div>
+    <div style="width: 100%; padding: 20px" id="main">
+        <div v-if="login">
+
+        </div>
+        <div v-else>
+            <h1>
+                请先登录
+            </h1>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/base.js"></script>
+<script>
+    var main = new Vue({
+        el:"#main",
+        data:data,
+        methods:{
+        }
+    });
+    function initPage() {
+        console.log("init");
+        vm.getUserInfo(function () {
+
+        });
+    }
+    window.onload = this.initPage();
+</script>
+</html>

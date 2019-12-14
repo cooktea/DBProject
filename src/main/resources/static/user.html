@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+    <link href="style/base.css" rel="stylesheet" type="text/css"/>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        table{
+            width: 70%;
+        }
+
+        td{
+            text-align: center;
+            height: 30px;
+        }
+    </style>
+
+
+</head>
+<body style="display: flex; flex-direction: column">
+<div class="header-panel">
+    <h1>科研项目管理系统</h1>
+    <div id="app" style="position: absolute;right: 100px;font-size: 20px" >
+        <a href="user.html" style="text-decoration: none" v-if="login">{{userInfo.name}}</a>
+        <a href="login.html" style="text-decoration: none" v-else>登录</a>
+    </div>
+</div>
+<div style="width: 100%; display: flex;flex-direction: row;">
+    <div style="width: 300px;height: 800px; border-right: solid; padding: 20px">
+        <div class="operation-panel">
+            <a href="index.html">首页</a>
+        </div>
+        <div class="operation-panel" style="background: gray">
+            <a href="user.html">我的信息</a>
+        </div>
+        <div class="operation-panel">
+            <a href="project.html">我的项目</a>
+        </div>
+        <div class="operation-panel">
+            <a href="approval.html">审核项目</a>
+        </div>
+        <div class="operation-panel">
+            <a href="check.html">验收项目</a>
+        </div>
+    </div>
+    <div id="main" style="width: 100%; padding: 20px">
+        <div v-if="login" style="width: 100%; display: flex; align-items: center; padding-top: 40px; flex-direction: column">
+            <table>
+                <tr>
+                    <td>姓名:</td>
+                    <td>{{userInfo.name}}</td>
+                    <td>编号:</td>
+                    <td>{{userInfo.number}}</td>
+                </tr>
+                <tr>
+                    <td>年龄:</td>
+                    <td>{{userInfo.age}}</td>
+                    <td>性别:</td>
+                    <td>{{userInfo.gender == 1 ? '男' : '女'}}</td>
+                </tr>
+                <tr>
+                    <td>部门:</td>
+                    <td>{{userInfo.department}}</td>
+                    <td>职称:</td>
+                    <td>{{userInfo.title}}</td>
+                </tr>
+                <tr>
+                    <td>职务:</td>
+                    <td>{{userInfo.position}}</td>
+                    <td>联系方式:</td>
+                    <td>{{userInfo.mobile}}</td>
+                </tr>
+            </table>
+            <table style="margin-top: 40px">
+                <tr>
+                    <td style="font-size: 25px; text-align: left; padding-bottom: 20px">项目申报情况</td>
+                </tr>
+                <tr>
+                    <th width="20%">编号</th>
+                    <th width="20%">名称</th>
+                    <th width="10%">项目状态</th>
+                    <th width="10%">审核状态</th>
+                    <th width="20%">审核原因</th>
+                </tr>
+                <tr v-for="project in projects">
+                    <td>{{project.number}}</td>
+                    <td>{{project.name}}</td>
+                    <td>{{project.status}}</td>
+                    <td>{{project.approval}}</td>
+                    <td>{{project.approvalReason}}</td>
+                </tr>
+            </table>
+        </div>
+        <div v-else>
+            <h1>
+                请先登录
+            </h1>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/base.js"></script>
+<script>
+    var main = new Vue({
+        el:"#main",
+        data:data,
+        methods:{
+            getProjects:function () {
+                console.log("XXXX");
+                axios.get("/project")
+                    .then(function (value) {
+                        this.main.projects = value.data;
+                    })
+                    .catch(function (reason) {
+                        console.log(reason)
+                    })
+            }
+        }
+    });
+    function initPage() {
+        console.log("init");
+        vm.getUserInfo(function () {
+            main.getProjects();
+        });
+    }
+    window.onload = this.initPage();
+</script>
+</html>

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+debug: true
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://134.175.104.191:3306/DBProject?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 1228
+
+mybatis-plus:
+  mapper-locations: "classPath:/mapper/*Mapper.xml"
+  type-aliases-package: com.kiwi.dbproject.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j.Log4jImpl

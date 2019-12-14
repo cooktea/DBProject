@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        #login-panel{
+            width: 600px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: solid;
+            border-radius: 50px;
+        }
+        input{
+            height: 40px;
+            margin: 20px;
+            width: 200px;
+            border-radius: 10px;
+            border: solid;
+            outline: none;
+            font-size: 20px;
+            padding-left: 10px;
+        }
+        button{
+            width: 150px;
+            margin-top: 10px;
+            height: 40px;
+            font-size: 16px;
+            border: solid;
+            border-radius: 10px;
+            background: aliceblue;
+            outline: none;
+        }
+    </style>
+
+</head>
+<body style="display: flex; justify-content: center; align-items: center; flex-direction: column; padding-top: 100px">
+    <h1>用户登录</h1>
+    <div id="login-panel">
+        <input v-model="userName" placeholder="请输入工号">
+        <input v-model="password" placeholder="请输入密码" type="password">
+        <button type="button" v-on:click="submit">确认</button>
+    </div>
+</body>
+
+<script>
+    var vm = new Vue({
+        el:"#login-panel",
+        data:{
+            userName:"",
+            password:""
+        },
+        methods:{
+            submit:function (event) {
+                axios.get("/teacher/login",{
+                    params:{
+                        userName:this.userName,
+                        password:this.password
+                    }
+                }).then(function (value) {
+                    if (value.data){
+                        window.location = "http://localhost:8080/index.html"
+                    } else {
+                        alert("工号或密码不正确");
+                    }
+                }).catch(function (reason) {
+                    console.log(reason)
+                    alert("系统错误");
+                })
+            }
+        }
+    })
+</script>
+
+</html>
