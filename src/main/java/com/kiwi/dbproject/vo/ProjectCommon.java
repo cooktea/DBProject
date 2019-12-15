@@ -21,10 +21,6 @@ public class ProjectCommon {
 
     private Double budget;
 
-    private Date startTime;
-
-    private Date endTime;
-
     private String fileName;
 
     private Integer fileID;
@@ -42,8 +38,6 @@ public class ProjectCommon {
                 ", approvalReason='" + approvalReason + '\'' +
                 ", approvalUserName='" + approvalUserName + '\'' +
                 ", budget=" + budget +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
                 ", fileName='" + fileName + '\'' +
                 ", fileID=" + fileID +
                 ", description='" + description + '\'' +
@@ -65,24 +59,6 @@ public class ProjectCommon {
 
     public ProjectCommon setBudget(Double budget) {
         this.budget = budget;
-        return this;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public ProjectCommon setStartTime(Date startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public ProjectCommon setEndTime(Date endTime) {
-        this.endTime = endTime;
         return this;
     }
 

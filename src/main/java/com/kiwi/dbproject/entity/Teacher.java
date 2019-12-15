@@ -25,6 +25,9 @@ public class Teacher implements Serializable {
     @TableField("name")
     private String name;
 
+    @TableField("password")
+    private String password;
+
     @TableField("number")
     private String number;
 
@@ -131,6 +134,15 @@ public class Teacher implements Serializable {
 
     public Teacher setNumber(String number) {
         this.number = number;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Teacher setPassword(String password) {
+        this.password = password;
         return this;
     }
 }

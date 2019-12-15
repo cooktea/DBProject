@@ -3,9 +3,12 @@ package com.kiwi.dbproject.controller;
 
 import com.kiwi.dbproject.bo.TeacherBO;
 import com.kiwi.dbproject.config.CacheInfo;
+import com.kiwi.dbproject.config.Converter;
 import com.kiwi.dbproject.entity.Teacher;
+import com.kiwi.dbproject.service.ITeacherService;
 import com.kiwi.dbproject.vo.response.TeacherResponse;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,27 +26,26 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/teacher")
 public class TeacherController {
+
+    @Autowired
+    private ITeacherService teacherService;
+
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public TeacherResponse getCurrentUserInfo(){
         TeacherBO currentUserInfo = CacheInfo.getCurrentUserInfo();
-//        return currentUserInfo;
-        return new TeacherResponse()
-                .setId(1)
-                .setAge(23)
-                .setDepartment("计算机学院")
-                .setGender("1")
-                .setMobile("18936023725")
-                .setPosition("办公室主任")
-                .setTitle("副教授")
-                .setName("KIWI")
-                .setNumber("2018140580");
+        if (currentUserInfo != null){
+            return Converter.map(currentUserInfo);
+        }
+        return null;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public boolean login(@Param(value = "userName") String userName, String password, HttpServletResponse response) throws IOException {
-        System.out.println(userName);
-        System.out.println(password);
-        response.sendRedirect("/index.html");
-        return false;
+        Boolean correct = teacherService.login(userName, password);
+        if (correct){
+            response.sendRedirect("/index.html");
+        }
+        return correct;
     }
 }

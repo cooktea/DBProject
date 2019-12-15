@@ -159,6 +159,7 @@
                     .then(function (value) {
                         console.log(value);
                         this.main.showFrom = false;
+                        setTimeout(this.main.getProjects,1500);
                     })
                     .catch(function (reason) {
                         console.log(reason)

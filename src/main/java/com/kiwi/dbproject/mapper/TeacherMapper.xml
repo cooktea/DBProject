@@ -5,9 +5,12 @@
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="number" property="number"/>
-        <result column="position_name" property="position"/>
-        <result column="department_name" property="department"/>
-        <result column="title_name" property="title"/>
+        <result column="position_name" property="positionName"/>
+        <result column="department_name" property="departmentName"/>
+        <result column="title_name" property="titleName"/>
+        <result column="position_id" property="position"/>
+        <result column="title_id" property="title"/>
+        <result column="department" property="department"/>
         <result column="age" property="age"/>
         <result column="mobile" property="mobile"/>
         <result column="gender" property="gender"/>
@@ -33,7 +36,7 @@
         select
         *,
         p.name as position_name,
-        d.name as depatment_name,
+        d.name as department_name,
         title.name as title_name
         from teacher t
         left join position p

@@ -19,6 +19,27 @@ public class TeacherResponse {
 
     private String gender;
 
+    private Boolean checkPermission;
+
+    private Boolean approvalPermission;
+
+    public Boolean getCheckPermission() {
+        return checkPermission;
+    }
+
+    public TeacherResponse setCheckPermission(Boolean checkPermission) {
+        this.checkPermission = checkPermission;
+        return this;
+    }
+
+    public Boolean getApprovalPermission() {
+        return approvalPermission;
+    }
+
+    public TeacherResponse setApprovalPermission(Boolean approvalPermission) {
+        this.approvalPermission = approvalPermission;
+        return this;
+    }
 
     public Integer getId() {
         return id;

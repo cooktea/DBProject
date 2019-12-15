@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>项目审核</title>
@@ -35,7 +35,57 @@
     </div>
     <div style="width: 100%; padding: 20px" id="main">
         <div v-if="login">
-
+            <div v-if="userInfo.approvalPermission" style="display: flex; justify-content: center; align-items: center; flex-direction: column">
+                <table v-for="p in projects" style="width: 800px;margin: 50px; border: solid"  border="1">
+                    <tr>
+                        <td>项目名称:</td>
+                        <td>{{p.name}}</td>
+                        <td>预算:</td>
+                        <td>{{p.budget}}</td>
+                    </tr>
+                    <tr>
+                        <td>项目状态:</td>
+                        <td>{{p.status}}</td>
+                        <td>项目编号:</td>
+                        <td>{{p.number}}</td>
+                    </tr>
+                    <tr>
+                        <td>开始时间:</td>
+                        <td>{{p.startTime}}</td>
+                        <td>结束时间:</td>
+                        <td>{{p.endTime}}</td>
+                    </tr>
+                    <tr>
+                        <td>审核状态:</td>
+                        <td>{{p.approval}}</td>
+                        <td>审核原因:</td>
+                        <td>{{p.approvalReason}}</td>
+                    </tr>
+                    <tr>
+                        <td>审核人:</td>
+                        <td>{{p.approvalUserName}}</td>
+                        <td>附件:</td>
+                        <td>
+                            <a v-bind:href="'http://localhost:8080/file?id='+p.fileID">{{p.fileName}}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>项目介绍:</td>
+                        <td colspan="3">{{p.description}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            <a v-bind:href="'http://localhost:8080/project/approval/pass?id='+p.id">审核通过</a>
+                        </td>
+                        <td colspan="1">
+                            <a v-bind:href="'http://localhost:8080/project/approval/refuse?id='+p.id">审核不通过</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div v-else>
+                <h1>没有审核权限</h1>
+            </div>
         </div>
         <div v-else>
             <h1>
@@ -51,13 +101,23 @@
         el:"#main",
         data:data,
         methods:{
+            getProjects:function () {
+                console.log("XXXX");
+                axios.get("/project/approval")
+                    .then(function (value) {
+                        this.main.projects = value.data;
+                    })
+                    .catch(function (reason) {
+                        console.log(reason)
+                    })
+            }
         }
     });
     function initPage() {
         console.log("init");
         vm.getUserInfo(function () {
-
         });
+        main.getProjects();
     }
     window.onload = this.initPage();
 </script>

@@ -35,6 +35,9 @@ public class Project implements Serializable {
     @TableField("description")
     private String description;
 
+    @TableField("number")
+    private String number;
+
     @TableField("end_time")
     private Date endTime;
 
@@ -180,6 +183,15 @@ public class Project implements Serializable {
 
     public Project setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public Project setNumber(String number) {
+        this.number = number;
         return this;
     }
 }

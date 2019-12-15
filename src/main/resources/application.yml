@@ -11,7 +11,8 @@ spring:
     password: 1228
 
 mybatis-plus:
-  mapper-locations: "classPath:/mapper/*Mapper.xml"
+#  mapper-locations: "classPath:mapper/*.xml"
   type-aliases-package: com.kiwi.dbproject.entity
+  check-config-location: true
   configuration:
-    log-impl: org.apache.ibatis.logging.log4j.Log4jImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -1,21 +1,29 @@
 package com.kiwi.dbproject.controller;
 
 
+import com.kiwi.dbproject.bo.ProjectBO;
 import com.kiwi.dbproject.bo.TeacherBO;
 import com.kiwi.dbproject.config.CacheInfo;
+import com.kiwi.dbproject.config.Converter;
 import com.kiwi.dbproject.entity.Project;
 import com.kiwi.dbproject.entity.Teacher;
+import com.kiwi.dbproject.service.IProjectService;
 import com.kiwi.dbproject.vo.request.ProjectRequest;
 import com.kiwi.dbproject.vo.response.ProjectResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -29,32 +37,75 @@ import java.util.List;
 @RequestMapping("/project")
 public class ProjectController {
 
+    @Autowired
+    private IProjectService projectService;
+
+    @RequestMapping(value = "/approval", method = RequestMethod.GET)
+    public List<ProjectResponse> queryApprovalProjects(){
+        List<ProjectBO> projectBOS = projectService.queryProjectsByApprovalStatus("待审核");
+        return projectBOS.stream().map(Converter::map).collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/approval/pass", method = RequestMethod.GET)
+    public void passApproval(Integer id, HttpServletResponse response){
+        projectService.passApproval(id);
+        try {
+            PrintWriter writer = response.getWriter();
+            response.setHeader("refresh","1;URL=http://localhost:8080/approval.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/approval/refuse", method = RequestMethod.GET)
+    public void refuseApproval(Integer id, HttpServletResponse response){
+        projectService.refuseApproval(id);
+        try {
+            PrintWriter writer = response.getWriter();
+            response.setHeader("refresh","1;URL=http://localhost:8080/approval.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/check/pass", method = RequestMethod.GET)
+    public void passCheck(Integer id, HttpServletResponse response){
+        projectService.passCheck(id);
+        try {
+            PrintWriter writer = response.getWriter();
+            response.setHeader("refresh","1;URL=http://localhost:8080/check.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/check/refuse", method = RequestMethod.GET)
+    public void refuseCheck(Integer id, HttpServletResponse response){
+        projectService.refuseCheck(id);
+        try {
+            PrintWriter writer = response.getWriter();
+            response.setHeader("refresh","1;URL=http://localhost:8080/check.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/check", method = RequestMethod.GET)
+    public List<ProjectResponse> queryCheckProjects(){
+        List<ProjectBO> projectBOS = projectService.queryProjectsByStatus("待验收");
+        return projectBOS.stream().map(Converter::map).collect(Collectors.toList());
+    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<ProjectResponse> queryProjects(){
-        List<ProjectResponse> responses = new ArrayList<>();
-        ProjectResponse r1 = new ProjectResponse();
-        ProjectResponse r2 = new ProjectResponse();
-        r1.setName("p1");
-        r1.setNumber("897897213213432");
-        r1.setApproval("待审核");
-        r1.setStatus("已申请");
-        r2.setName("p2");
-        r2.setApproval("审核失败");
-        r2.setApprovalReason("原因");
-        r2.setNumber("243241321321432");
-        r2.setStartTime(new Date());
-        r2.setEndTime(new Date());
-        r2.setFileName("附件1");
-        r2.setFileID(2);
-        r2.setDescription("安徽省看见上帝啊四月份的哈数据库的还能奥克兰撒谎的付款了就是哈跨境电商克劳福德是按付款几乎都是科技孵化啊的数据恢复健康了大厦付款记录的哈萨克了");
-        responses.add(r1);
-        responses.add(r2);
-        return responses;
+        List<ProjectBO> projectBOS = projectService.queryProjectsByUserId(CacheInfo.getCurrentUserInfo().getId());
+        return projectBOS.stream().map(Converter::map).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public void postProject(@RequestBody ProjectRequest request){
-
+        ProjectBO projectBO = Converter.map(request);
+        projectService.applyProject(projectBO);
     }
 
 }

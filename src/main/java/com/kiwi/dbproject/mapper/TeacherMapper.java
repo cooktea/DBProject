@@ -1,5 +1,6 @@
 package com.kiwi.dbproject.mapper;
 
+import com.kiwi.dbproject.bo.TeacherBO;
 import com.kiwi.dbproject.entity.Teacher;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface TeacherMapper extends BaseMapper<Teacher> {
 
+    TeacherBO queryTeacherById(Integer id);
+
+    TeacherBO login(String number, String password);
 }
